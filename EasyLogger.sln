@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyLogger", "EasyLogger/EasyLogger.csproj", "{21528BD7-5BDB-4D21-BE15-E41C83E808DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyLogger.Tests", "EasyLogger.Tests\EasyLogger.Tests.csproj", "{D6AF80AC-06B6-40C5-A990-45AA1947630D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{21528BD7-5BDB-4D21-BE15-E41C83E808DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21528BD7-5BDB-4D21-BE15-E41C83E808DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21528BD7-5BDB-4D21-BE15-E41C83E808DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21528BD7-5BDB-4D21-BE15-E41C83E808DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6AF80AC-06B6-40C5-A990-45AA1947630D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6AF80AC-06B6-40C5-A990-45AA1947630D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6AF80AC-06B6-40C5-A990-45AA1947630D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6AF80AC-06B6-40C5-A990-45AA1947630D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
