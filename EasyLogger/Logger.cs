@@ -7,74 +7,45 @@ namespace EasyLogger;
 public class Logger {
     private const string LOG_SECTION_SEPARATOR = " | ";
 
-    private readonly LoggerConfig _config;
-
-    private FileStream _logStream = null!;
-    private StreamWriter _writer = null!;
+    public readonly LoggerConfig Config;
+    private readonly List<ILogWriter> _writers;
 
     /// <summary>
-    /// Create a new Logger using a path and config.
+    /// Create a new Logger using a config.
     /// </summary>
-    /// <param name="logPath">
-    /// May be either a file or a directory.
-    /// A filepath will create a log at the specified path.
-    /// A path to a directory will automatically generate the log's name based on the logger's start time,
-    ///   and then create a log file with that name in the provided directory.
-    /// </param>
     /// <param name="config">The config the logger will use.</param>
-    public Logger(string logPath, LoggerConfig config) {
-        _config = config;
+    /// <param name="writers">The writers the logger will call with message to log.</param>
+    public Logger(LoggerConfig config, params ILogWriter[] writers) {
+        Config = config;
+        _writers = [ ..writers ];
 
-        if (Path.HasExtension(logPath)) {
-            // Direct path to a file
-            CreateLog(logPath);
-        } else {
-            // Path to directory, we need to generate a filename ourselves
-            string name = $"{GetTimeStamp(_config.StartTime)}.log";
-            string path = Path.Join(logPath, name);
-            CreateLog(path);
+        foreach (ILogWriter writer in _writers) {
+            writer.StartLog(this);
         }
     }
 
-    /// <summary>
-    /// Create a new Logger using a path, id, and config.
-    /// The name of the log file will be automatically generated from the logger's start time and id.
-    /// </summary>
-    /// <param name="logDirectory">The path to the directory the log should be created in.</param>
-    /// <param name="id">The id of the log.</param>
-    /// <param name="config">The config the logger will use.</param>
-    public Logger(string logDirectory, string id, LoggerConfig config)
-        : this(logDirectory, config) {
-        string name = $"{GetTimeStamp(_config.StartTime)}_{id}.log";
-        string path = Path.Join(logDirectory, name);
-        CreateLog(path);
-    }
-
-    private void CreateLog(string path) {
-        // File.Create throws insufficiently detailed exceptions to use a try-catch
-        if (File.Exists(path)) throw new IOException($"Log file '{path}' already exists.");
-
-        _logStream = File.Create(path);
-        _writer = new StreamWriter(_logStream);
-    }
-
-    // Normally, we use local time to better match a user's expectation of what the latest log should be named.
-    private string GetTimeStamp(DateTime time)
-        => _config.UseUnixTime
+    internal string GetTimeStamp(DateTime time)
+        => Config.UseUnixTime
             ? new DateTimeOffset(time)
                 .ToUnixTimeMilliseconds()
                 .ToString()
             : time.ToString("dd-MM-yyyyTHH:mm:ss.fff");
 
     private string GetTimeStampFromStart(DateTime time) {
-        TimeSpan delta = time.Subtract(_config.StartTime);
-        return _config.UseUnixTime
+        TimeSpan delta = time.Subtract(Config.StartTime);
+        return Config.UseUnixTime
             ? ((int)delta.TotalMilliseconds).ToString()
             : $"{(int)delta.TotalHours:00}:{delta:mm}:{delta:ss}.{delta:fff}";
     }
 
-    private static string BuildLogLine(params string[] sections)
-        => string.Join(LOG_SECTION_SEPARATOR, sections);
+    /// <summary>
+    /// Flush all writers, if applicable.
+    /// </summary>
+    public void Flush() {
+        foreach (ILogWriter writer in _writers) {
+            writer.Flush();
+        }
+    }
 
     /// <summary>
     /// Log a message in the log file at the provided log level.
@@ -84,20 +55,32 @@ public class Logger {
     /// <param name="caller">Optional. The filepath to the caller. Automatically supplied if not provided.</param>
     /// <param name="callerLine">Optional. The line number of the call. Automatically supplied if not provided.</param>
     public void Log(LogLevel level, string message, [CallerFilePath] string caller = "", [CallerLineNumber] int callerLine = 0) {
-        string timestamp =
-            _config.UseDeltaTime
-                ? GetTimeStampFromStart(DateTime.Now)
-                : GetTimeStamp(DateTime.Now);
+        List<string> sections = [ ];
 
-        string logLine;
-
-        if (_config.LogCaller) {
-            logLine = BuildLogLine($"[{level}]", timestamp, $"{Path.GetFileName(caller)}:{callerLine}", message);
-        } else {
-            logLine = BuildLogLine($"[{level}]", timestamp, message);
+        if (Config.LogLevel) {
+            sections.Add($"[{level.ToString().ToUpperInvariant()}]");
         }
 
-        _writer.WriteLine(logLine);
+        if (Config.LogTimeStamp) {
+            string timestamp =
+                Config.UseDeltaTime
+                    ? GetTimeStampFromStart(DateTime.Now)
+                    : GetTimeStamp(DateTime.Now);
+
+            sections.Add(timestamp);
+        }
+
+        if (Config.LogCaller) {
+            sections.Add($"{Path.GetFileName(caller)}:{callerLine}");
+        }
+
+        sections.Add(message);
+
+        string logLine = string.Join(LOG_SECTION_SEPARATOR, sections);
+
+        foreach (ILogWriter writer in _writers) {
+            writer.Log(logLine);
+        }
     }
 
     /* ========== Additional methods for ease of use ========== */

@@ -7,7 +7,7 @@ namespace EasyLogger;
 public struct LoggerConfig {
     /// <summary>
     /// The time at the start of logging.
-    /// It is encouraged to use a <see cref="LoggerFactory"/> to create many <see cref="Logger">Loggers</see> with the same start time.
+    /// It is encouraged to use a <see cref="FileLoggerFactory"/> to create many <see cref="Logger">Loggers</see> with the same start time.
     /// <br/>Defaults to <c>DateTime.Now</c>.
     /// </summary>
     public DateTime StartTime = DateTime.Now;
@@ -34,6 +34,18 @@ public struct LoggerConfig {
     /// <br/>Defaults to <c>false</c>.
     /// </summary>
     public bool LogCaller = false;
+
+    /// <summary>
+    /// Whether to also log the current time when logging.
+    /// <br/>Defaults to <c>true</c>.
+    /// </summary>
+    public bool LogTimeStamp = true;
+
+    /// <summary>
+    /// Whether to also log the level of the log.
+    /// <br/>Defaults to <c>true</c>.
+    /// </summary>
+    public bool LogLevel = true;
 
     public LoggerConfig() { }
 }
