@@ -66,7 +66,7 @@ public class FileLogWriter : ILogWriter {
     private void CreateLog(string path) {
         if (File.Exists(path)) throw new IOException($"Log file '{path}' already exists.");
 
-        _logStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read);
+        _logStream = new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.ReadWrite);
         _writer = new StreamWriter(_logStream);
     }
 
