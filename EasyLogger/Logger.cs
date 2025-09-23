@@ -59,7 +59,8 @@ public class Logger {
     /// <param name="message">The message to log.</param>
     /// <param name="caller">Optional. The filepath to the caller. Automatically supplied if not provided.</param>
     /// <param name="callerLine">Optional. The line number of the call. Automatically supplied if not provided.</param>
-    public void Log(LogLevel level, string message, [CallerFilePath] string caller = "", [CallerLineNumber] int callerLine = 0) {
+    /// <returns>Whether the logging succeeded. The logging has failed if <i>any</i> of the writers failed to log.</returns>
+    public bool Log(LogLevel level, string message, [CallerFilePath] string caller = "", [CallerLineNumber] int callerLine = 0) {
         List<string> sections = [ ];
 
         if (Config.LogLevel) {
@@ -83,9 +84,12 @@ public class Logger {
 
         string logLine = string.Join(LOG_SECTION_SEPARATOR, sections);
 
+        bool successful = true;
         foreach (ILogWriter writer in _writers) {
-            writer.Log(logLine);
+            successful &= writer.Log(logLine);
         }
+
+        return successful;
     }
 
     /* ========== Additional methods for ease of use ========== */
@@ -97,7 +101,7 @@ public class Logger {
     /// <param name="message">The message to log.</param>
     /// <param name="caller">Optional. The filepath to the caller. Automatically supplied if not provided.</param>
     /// <param name="callerLine">Optional. The line number of the call. Automatically supplied if not provided.</param>
-    public void Debug(string message, [CallerFilePath] string caller = "", [CallerLineNumber] int callerLine = 0)
+    public bool Debug(string message, [CallerFilePath] string caller = "", [CallerLineNumber] int callerLine = 0)
         => Log(LogLevel.Debug, message, caller, callerLine);
 
     /// <summary>
@@ -106,7 +110,7 @@ public class Logger {
     /// <param name="message">The message to log.</param>
     /// <param name="caller">Optional. The filepath to the caller. Automatically supplied if not provided.</param>
     /// <param name="callerLine">Optional. The line number of the call. Automatically supplied if not provided.</param>
-    public void Verbose(string message, [CallerFilePath] string caller = "", [CallerLineNumber] int callerLine = 0)
+    public bool Verbose(string message, [CallerFilePath] string caller = "", [CallerLineNumber] int callerLine = 0)
         => Log(LogLevel.Verbose, message, caller, callerLine);
 
     /// <summary>
@@ -115,7 +119,7 @@ public class Logger {
     /// <param name="message">The message to log.</param>
     /// <param name="caller">Optional. The filepath to the caller. Automatically supplied if not provided.</param>
     /// <param name="callerLine">Optional. The line number of the call. Automatically supplied if not provided.</param>
-    public void Info(string message, [CallerFilePath] string caller = "", [CallerLineNumber] int callerLine = 0)
+    public bool Info(string message, [CallerFilePath] string caller = "", [CallerLineNumber] int callerLine = 0)
         => Log(LogLevel.Info, message, caller, callerLine);
 
     /// <summary>
@@ -124,7 +128,7 @@ public class Logger {
     /// <param name="message">The message to log.</param>
     /// <param name="caller">Optional. The filepath to the caller. Automatically supplied if not provided.</param>
     /// <param name="callerLine">Optional. The line number of the call. Automatically supplied if not provided.</param>
-    public void Warn(string message, [CallerFilePath] string caller = "", [CallerLineNumber] int callerLine = 0)
+    public bool Warn(string message, [CallerFilePath] string caller = "", [CallerLineNumber] int callerLine = 0)
         => Log(LogLevel.Warn, message, caller, callerLine);
 
     /// <summary>
@@ -133,7 +137,7 @@ public class Logger {
     /// <param name="message">The message to log.</param>
     /// <param name="caller">Optional. The filepath to the caller. Automatically supplied if not provided.</param>
     /// <param name="callerLine">Optional. The line number of the call. Automatically supplied if not provided.</param>
-    public void Error(string message, [CallerFilePath] string caller = "", [CallerLineNumber] int callerLine = 0)
+    public bool Error(string message, [CallerFilePath] string caller = "", [CallerLineNumber] int callerLine = 0)
         => Log(LogLevel.Error, message, caller, callerLine);
 
     /// <summary>
@@ -142,7 +146,7 @@ public class Logger {
     /// <param name="message">The message to log.</param>
     /// <param name="caller">Optional. The filepath to the caller. Automatically supplied if not provided.</param>
     /// <param name="callerLine">Optional. The line number of the call. Automatically supplied if not provided.</param>
-    public void Fatal(string message, [CallerFilePath] string caller = "", [CallerLineNumber] int callerLine = 0)
+    public bool Fatal(string message, [CallerFilePath] string caller = "", [CallerLineNumber] int callerLine = 0)
         => Log(LogLevel.Fatal, message, caller, callerLine);
 
     // ReSharper restore ExplicitCallerInfoArgument

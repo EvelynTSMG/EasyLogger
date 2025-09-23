@@ -15,7 +15,8 @@ public interface ILogWriter {
     /// Log a message.
     /// </summary>
     /// <param name="message">The message to write.</param>
-    public void Log(string message);
+    /// <returns>Whether the logging was successful.</returns>
+    public bool Log(string message);
 
     /// <summary>
     /// Flush the LogWriter, if applicable.

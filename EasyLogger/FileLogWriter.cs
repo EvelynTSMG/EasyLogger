@@ -70,8 +70,9 @@ public class FileLogWriter : ILogWriter {
         _writer = new StreamWriter(_logStream);
     }
 
-    public void Log(string message) {
+    public bool Log(string message) {
         _writer.WriteLine(message);
+        return true;
     }
 
     public void Flush() {

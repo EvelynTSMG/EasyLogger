@@ -29,8 +29,9 @@ public class ConsoleLogWriter(TextWriter outputStream) : ILogWriter {
 
     public void StartLog(Logger logger) { }
 
-    public void Log(string message) {
+    public bool Log(string message) {
         outputStream.WriteLine(message);
+        return true;
     }
 
     public void Flush() {
