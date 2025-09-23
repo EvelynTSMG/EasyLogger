@@ -22,4 +22,9 @@ public interface ILogWriter {
     /// Flush the LogWriter, if applicable.
     /// </summary>
     public void Flush() { }
+
+    /// <summary>
+    /// Close the LogWriter.
+    /// </summary>
+    public void Close() { }
 }

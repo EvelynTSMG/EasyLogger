@@ -1,5 +1,4 @@
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace EasyLogger;
 
@@ -9,7 +8,7 @@ namespace EasyLogger;
 /// <seealso cref="LoggerConfig"/>
 /// </summary>
 [PublicAPI]
-public class Logger {
+public class Logger : IDisposable {
     private const string LOG_SECTION_SEPARATOR = " | ";
 
     public readonly LoggerConfig Config;
@@ -27,6 +26,22 @@ public class Logger {
         foreach (ILogWriter writer in _writers) {
             writer.StartLog(this);
         }
+    }
+
+    ~Logger() {
+        foreach (ILogWriter writer in _writers) {
+            writer.Flush();
+            writer.Close();
+        }
+    }
+
+    public void Dispose() {
+        foreach (ILogWriter writer in _writers) {
+            writer.Flush();
+            writer.Close();
+        }
+
+        GC.SuppressFinalize(this);
     }
 
     internal string GetTimeStamp(DateTime time)

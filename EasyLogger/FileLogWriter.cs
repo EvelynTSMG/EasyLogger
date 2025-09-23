@@ -78,4 +78,8 @@ public class FileLogWriter : ILogWriter {
     public void Flush() {
         _writer.Flush();
     }
+
+    public void Close() {
+        _writer.Close();
+    }
 }

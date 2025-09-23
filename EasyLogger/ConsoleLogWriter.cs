@@ -24,7 +24,7 @@ namespace EasyLogger;
 /// <br/>Defaults to <c>false</c>.
 /// </param>
 [PublicAPI]
-public class ConsoleLogWriter(TextWriter outputStream) : ILogWriter {
+public class ConsoleLogWriter(TextWriter outputStream, bool closeStream = false) : ILogWriter {
     public ConsoleLogWriter() : this(Console.Out) { }
 
     public void StartLog(Logger logger) { }
@@ -36,5 +36,9 @@ public class ConsoleLogWriter(TextWriter outputStream) : ILogWriter {
 
     public void Flush() {
         outputStream.Flush();
+    }
+
+    public void Close() {
+        if (closeStream) outputStream.Close();
     }
 }
