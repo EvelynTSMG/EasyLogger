@@ -1,5 +1,10 @@
 namespace EasyLogger;
 
+/// <summary>
+/// Writer for logging to a new file.
+/// Will automatically close the file when it is closed.
+/// Files created can be read and written while the logger is open.
+/// </summary>
 [PublicAPI]
 public class FileLogWriter : ILogWriter {
     private readonly string _logDirectory;
@@ -59,7 +64,6 @@ public class FileLogWriter : ILogWriter {
     }
 
     private void CreateLog(string path) {
-        // File.Create throws insufficiently detailed exceptions to use a try-catch
         if (File.Exists(path)) throw new IOException($"Log file '{path}' already exists.");
 
         _logStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read);

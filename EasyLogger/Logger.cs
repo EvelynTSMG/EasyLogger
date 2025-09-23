@@ -3,6 +3,11 @@ using System.Text;
 
 namespace EasyLogger;
 
+/// <summary>
+/// Logger that manages logging message to provided <see cref="ILogWriter">ILogWriters</see>.
+/// When <see cref="IDisposable">Disposed</see>, flushes and closes all writers.
+/// <seealso cref="LoggerConfig"/>
+/// </summary>
 [PublicAPI]
 public class Logger {
     private const string LOG_SECTION_SEPARATOR = " | ";

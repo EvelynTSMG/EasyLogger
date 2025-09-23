@@ -1,5 +1,8 @@
 namespace EasyLogger;
 
+/// <summary>
+/// Interface for a log writer, which improves
+/// </summary>
 public interface ILogWriter {
     /// <summary>
     /// Start a log. May be called multiple times by different <see cref="Logger">Loggers</see>.
