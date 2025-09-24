@@ -107,8 +107,17 @@ public class Logger : IDisposable {
         return successful;
     }
 
-    /* ========== Additional methods for ease of use ========== */
+    /* ========== Shorthand methods for ease of use ========== */
     // ReSharper disable ExplicitCallerInfoArgument
+
+    /// <summary>
+    /// Log a message in the log file at the Trace level.
+    /// </summary>
+    /// <param name="message">The message to log.</param>
+    /// <param name="caller">Optional. The filepath to the caller. Automatically supplied if not provided.</param>
+    /// <param name="callerLine">Optional. The line number of the call. Automatically supplied if not provided.</param>
+    public bool Trace(string message, [CallerFilePath] string caller = "", [CallerLineNumber] int callerLine = 0)
+        => Log(LogLevel.Trace, message, caller, callerLine);
 
     /// <summary>
     /// Log a message in the log file at the Debug level.
