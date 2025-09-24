@@ -25,4 +25,20 @@ Logger bananaLogger = loggerFactory.Create("banana");
 Logger cherryLogger = loggerFactory.Create("cherry");
 ```
 **Remember to flush or close loggers before the application exits.**
-Otherwise, there is no guarantee the loggers will properly flush.
+Otherwise, there is no guarantee the loggers will properly flush.\
+\
+Once you have a `Logger`, logging can be performed using the `Log` method.
+You must pass in the log level and message, like so:
+```csharp
+appleLogger.Log(LogLevel.Info, "I like apples.");
+```
+Shorthand methods are provided for logging each supported level:
+```csharp
+appleLogger.Trace("Talking about shorthand methods.");
+appleLogger.Debug("I do not want bugs in my food.");
+appleLogger.Verbose("I like green apples because they are sour.")
+appleLogger.Info("I like apples.");
+appleLogger.Warn("I do not like bananas.");
+appleLogger.Error("Tomatoes are a berry.");
+appleLogger.Fatal("I'm allergic to peanuts.");
+```
