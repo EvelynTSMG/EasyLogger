@@ -2,7 +2,7 @@
 EasyLogger is a C# logging library intended to be simple and easy to use.\
 It is NOT intended to:
 - have every feature under the sun,
-- maintain backwards compatibility across multiple versions of C#,
+- maintain backwards compatibility across many versions of C#,
 - be the end all be all of C# logger libraries.
 
 ### How to use EasyLogger?
