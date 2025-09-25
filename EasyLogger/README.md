@@ -11,8 +11,7 @@ It is NOT intended to:
 
 Loggers need a `LoggerConfig`, as well as any amount of `ILogWriter`s.\
 For documentation on the configuration,
-see <a href="https://github.com/EvelynTSMG/EasyLogger/blob/main/EasyLogger/LoggerConfig.cs">
-EasyLogger/LoggerConfig.cs</a>\
+see [EasyLogger/LoggerConfig.cs](https://github.com/EvelynTSMG/EasyLogger/blob/main/EasyLogger/LoggerConfig.cs)\
 \
 For example, you can create a new Logger to write to the console with the default configuration like so:
 
