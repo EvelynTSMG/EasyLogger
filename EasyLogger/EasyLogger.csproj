@@ -4,10 +4,26 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <PackageId>EvelynTSMG.EasyLogger</PackageId>
+        <Title>EasyLogger</Title>
+        <Authors>EvelynTSMG</Authors>
+        <Description>EasyLogger is a C# logging library intended to be simple and easy to use.</Description>
+        <Copyright>Copyright (c) Evelyn Veilwinter 2025</Copyright>
+        <PackageProjectUrl>https://github.com/EvelynTSMG/EasyLogger</PackageProjectUrl>
+        <PackageIcon>Icon.png</PackageIcon>
+        <PackageTags>logging, log, output, console, file, simple, easy</PackageTags>
+        <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations" Version="2025.2.2"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <None Update="Icon.png" Pack="true" PackagePath=""/>
+        <None Include="LICENSE" Pack="true" PackagePath=""/>
+        <None Include="README.md" Pack="true" PackagePath=""/>
+    </ItemGroup>
 </Project>
